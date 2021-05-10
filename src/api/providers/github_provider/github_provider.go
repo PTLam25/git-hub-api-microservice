@@ -22,6 +22,7 @@ func getAuthorizationHeader(accessToken string) string {
 }
 
 func CreateRepo(assessToken string, request github.CreateRepoRequest) (*github.CreateRepoResponse, *github.GitHubErrorResponse) {
+	fmt.Println("Calling CreateRepo to GitHub API")
 	// 1) создаем Header с accessToken
 	headers := http.Header{}
 	headers.Set(headerAuthorization, getAuthorizationHeader(assessToken))
@@ -33,7 +34,7 @@ func CreateRepo(assessToken string, request github.CreateRepoRequest) (*github.C
 	// когда не удалось получить ответа от GitHub
 	if err != nil {
 		// log error
-		log.Println("error when trying to create  new repo in github: %s", err.Error())
+		log.Printf("error when trying to create  new repo in github: %s", err.Error())
 		return nil, &github.GitHubErrorResponse{
 			StatusCode: http.StatusInternalServerError, Message: err.Error(),
 		}
@@ -67,7 +68,7 @@ func CreateRepo(assessToken string, request github.CreateRepoRequest) (*github.C
 	var result github.CreateRepoResponse
 	if err := json.Unmarshal(bytes, &result); err != nil {
 		// log error
-		log.Println("error when trying to unmarshal create repo successful response from github: %s", err.Error())
+		log.Printf("error when trying to unmarshal create repo successful response from github: %s", err.Error())
 		return nil, &github.GitHubErrorResponse{
 			StatusCode: http.StatusInternalServerError, Message: "error unmarshaling GitHub create repo response",
 		}
