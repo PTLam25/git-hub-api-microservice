@@ -1,6 +1,6 @@
 package repositories
 
-// Структура Request и Response, который сервер будет принимать от пользователя и возвращать ему
+// Структура Request и Response для repositories, который сервер будет принимать от пользователя и возвращать ему
 
 type CreateRepoRequest struct {
 	Name        string `json:"name"`
