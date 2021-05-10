@@ -78,6 +78,8 @@ func TestCreateRepoErrorInvalidResponseBody(t *testing.T) {
 }
 
 func TestCreateRepoInvalidErrorInterface(t *testing.T) {
+	// включаем режим тестирования для restclient
+	restclient.StartMockUps()
 	restclient.FlushMockUps()
 
 	restclient.AddMockUp(restclient.Mock{
@@ -98,6 +100,8 @@ func TestCreateRepoInvalidErrorInterface(t *testing.T) {
 }
 
 func TestCreateRepoUnauthorized(t *testing.T) {
+	// включаем режим тестирования для restclient
+	restclient.StartMockUps()
 	restclient.FlushMockUps()
 
 	restclient.AddMockUp(restclient.Mock{
@@ -118,6 +122,8 @@ func TestCreateRepoUnauthorized(t *testing.T) {
 }
 
 func TestCreateRepoInvalidSuccessResponse(t *testing.T) {
+	// включаем режим тестирования для restclient
+	restclient.StartMockUps()
 	restclient.FlushMockUps()
 
 	restclient.AddMockUp(restclient.Mock{
