@@ -1,2 +1,1 @@
-# git-hub-api-microservice
-Golang microservice with GitHub API integration.
+# GOLANG Microservice with GitHub API integration
