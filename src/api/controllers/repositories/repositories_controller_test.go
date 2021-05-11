@@ -107,7 +107,7 @@ func TestCreateRepoNoError(t *testing.T) {
 	// валидация статуса ответа в заголовке
 	assert.EqualValues(t, http.StatusCreated, response.Code)
 	// валидация тела ответа
-	var result repositories.CreateResponse
+	var result repositories.CreateRepoResponse
 	err := json.Unmarshal(response.Body.Bytes(), &result)
 	assert.Nil(t, err)
 	assert.EqualValues(t, 123, result.Id)
