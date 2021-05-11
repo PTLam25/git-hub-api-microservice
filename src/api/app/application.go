@@ -14,10 +14,10 @@ func init() {
 }
 
 func StartApp() {
-	log.Log.Info("about to map the urls")
+	log.Info("about to map the urls", "step:1", "status:pending")
 	// выводим логику запуска в отдельную функцию, чтобы можно было тестировать запуск приложения
 	mapUrls()
-	log.Log.Info("the urls successfully mapped")
+	log.Info("the urls successfully mapped", "step:2", "status:success")
 
 	if err := router.Run(":8080"); err != nil {
 		panic(err)
