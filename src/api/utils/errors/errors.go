@@ -2,6 +2,8 @@ package errors
 
 // Интерфейс ошибок приложении, которые можно вернуть пользователю
 import (
+	"encoding/json"
+	"errors"
 	"net/http"
 )
 
@@ -42,6 +44,15 @@ func NewApiError(statusCode int, message string) ApiError {
 		AStatus:  statusCode,
 		AMessage: message,
 	}
+}
+
+func NewApiErrorFromBytes(body []byte) (ApiError, error) {
+	// функция для создания ApiError из байтов
+	var result apiError
+	if err := json.Unmarshal(body, &result); err != nil {
+		return nil, errors.New("invalid json body")
+	}
+	return &result, nil
 }
 
 func NewNotFoundApiError(message string) ApiError {
