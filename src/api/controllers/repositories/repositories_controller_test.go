@@ -5,7 +5,7 @@ import (
 	"github.com/PTLam25/git-hub-api-microservice/src/api/client/restclient"
 	"github.com/PTLam25/git-hub-api-microservice/src/api/domain/repositories"
 	"github.com/PTLam25/git-hub-api-microservice/src/api/utils/errors"
-	"github.com/gin-gonic/gin"
+	"github.com/PTLam25/git-hub-api-microservice/src/api/utils/test_utils"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
@@ -27,13 +27,12 @@ func TestMain(m *testing.M) {
 
 func TestCreateRepoInvalidJsonRequest(t *testing.T) {
 	// 1) Инициализация
+	// добавляем в контекст объект request
+	request, _ := http.NewRequest(http.MethodPost, "/repositories", strings.NewReader(``))
 	// создаем объект Response для теста
 	response := httptest.NewRecorder()
 	// создали фейк контекст gin-gonic для теста, который будет менять созданный response
-	c, _ := gin.CreateTestContext(response)
-	// добавляем в контекст объект request
-	request, _ := http.NewRequest(http.MethodPost, "/repositories", strings.NewReader(``))
-	c.Request = request
+	c := test_utils.GetMockedContext(request, response)
 
 	// 2) вызываем функция для теста, которая делает запрос и поменяет данные response
 	CreateRepo(c)
@@ -51,14 +50,6 @@ func TestCreateRepoInvalidJsonRequest(t *testing.T) {
 
 func TestCreateRepoErrorFromGitHub(t *testing.T) {
 	// 1) Инициализация
-	// создаем объект Response для теста
-	response := httptest.NewRecorder()
-	// создали фейк контекст gin-gonic для теста, который будет менять созданный response
-	c, _ := gin.CreateTestContext(response)
-	// добавляем в контекст объект request
-	request, _ := http.NewRequest(http.MethodPost, "/repositories", strings.NewReader(`{"name": "testing"}`))
-	c.Request = request
-
 	restclient.FlushMockUps()
 	restclient.AddMockUp(restclient.Mock{
 		Url:        "https://api.github.com/user/repos",
@@ -68,6 +59,14 @@ func TestCreateRepoErrorFromGitHub(t *testing.T) {
 			Body:       ioutil.NopCloser(strings.NewReader(`{"message": "Requires authentication","documentation_url": "https://developer.github.com/v3/repos/#create"}`)),
 		},
 	})
+	// создаем объект Response для теста
+	response := httptest.NewRecorder()
+	// создали фейк контекст gin-gonic для теста, который будет менять созданный response
+	// добавляем в контекст объект request
+	request, _ := http.NewRequest(http.MethodPost, "/repositories", strings.NewReader(`{"name": "testing"}`))
+	// создали фейк контекст gin-gonic для теста, который будет менять созданный response
+	c := test_utils.GetMockedContext(request, response)
+
 	// 2) вызываем функция для теста, которая делает запрос и поменяет данные response
 	CreateRepo(c)
 
@@ -84,14 +83,6 @@ func TestCreateRepoErrorFromGitHub(t *testing.T) {
 
 func TestCreateRepoNoError(t *testing.T) {
 	// 1) Инициализация
-	// создаем объект Response для теста
-	response := httptest.NewRecorder()
-	// создали фейк контекст gin-gonic для теста, который будет менять созданный response
-	c, _ := gin.CreateTestContext(response)
-	// добавляем в контекст объект request
-	request, _ := http.NewRequest(http.MethodPost, "/repositories", strings.NewReader(`{"name": "testing"}`))
-	c.Request = request
-
 	restclient.FlushMockUps()
 	restclient.AddMockUp(restclient.Mock{
 		Url:        "https://api.github.com/user/repos",
@@ -101,6 +92,14 @@ func TestCreateRepoNoError(t *testing.T) {
 			Body:       ioutil.NopCloser(strings.NewReader(`{"id": 123}`)),
 		},
 	})
+	// создаем объект Response для теста
+	response := httptest.NewRecorder()
+	// создали фейк контекст gin-gonic для теста, который будет менять созданный response
+	// добавляем в контекст объект request
+	request, _ := http.NewRequest(http.MethodPost, "/repositories", strings.NewReader(`{"name": "testing"}`))
+	// создали фейк контекст gin-gonic для теста, который будет менять созданный response
+	c := test_utils.GetMockedContext(request, response)
+
 	// 2) вызываем функция для теста, которая делает запрос и поменяет данные response
 	CreateRepo(c)
 
